@@ -13,6 +13,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,9 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clases\Asm.cs" />
     <Compile Include="Clases\Cls_Lexico.cs" />
     <Compile Include="Clases\Cls_Semantico.cs" />
     <Compile Include="Clases\Cls_Sintactico.cs" />
+    <Compile Include="Clases\Cls_Tokens.cs" />
+    <Compile Include="Clases\Posfijo.cs" />
     <Compile Include="Editor_AcercaDe.cs">
       <SubType>Form</SubType>
     </Compile>

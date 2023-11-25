@@ -228,38 +228,14 @@ namespace Editor_Zcript
         }
         private void semánticoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(rtxt_Editor.Text == "")
-                MessageBox.Show("No hay codigo escrito.\r\nNo es posible ejecutar el analisis Semántico.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            else
-            {
-                clearDataGrid(dtgvSemEr); sintácticoToolStripMenuItem_Click(sender, e); bool LexError = false;
-                foreach (var dato in Cls_Lexico.queue)
-                {
-                    if (dato.Item2 > 400)
-                    {
-                        LexError = true;
-                        break;
-                    }
-                }
-                if(!LexError && Cls_Sintactico.OrdenErrores.Count <= 0) //Comprobar si no hay errores Lexicos o Sintacticos
-                {
-                    DataTable dt = new DataTable();
-                    dt.Columns.Add("Token", typeof(int));
-                    dt.Columns.Add("Error", typeof(string));
-                    dt.Columns.Add("Linea", typeof(int));
-                    Task t = new Task(() =>
-                    {
-                        Cls_Semantico.Analizar(Cls_Lexico.queue);
-                    }); t.Start(); Task.WaitAny(t);
-                    foreach(var dato in Cls_Semantico.Errores)
-                    {
-                        dt.Rows.Add(dato.Item1, dato.Item2, dato.Item3);
-                    }
-                    dtgvSemEr.DataSource = dt;
-                }
-                else
-                    MessageBox.Show("Hay errores Sintácticos.\r\nNo es posible ejecutar el analisis Semántico", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            lexicoToolStripMenuItem_Click(sender, e);
+            if(dtgvSemEr.Rows.Count > 0)
+                dtgvSemEr.Rows.Clear();
+            
+        }
+        private void rtxt_Cod_DoubleClick(object sender, EventArgs e)
+        {
+            rtxt_Cod.Copy();
         }
         #endregion
 
@@ -362,5 +338,6 @@ namespace Editor_Zcript
             }
         }
         #endregion
+
     }
 }

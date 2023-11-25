@@ -331,6 +331,7 @@
             this.rtxt_Cod.Size = new System.Drawing.Size(780, 277);
             this.rtxt_Cod.TabIndex = 7;
             this.rtxt_Cod.Text = "";
+            this.rtxt_Cod.DoubleClick += new System.EventHandler(this.rtxt_Cod_DoubleClick);
             // 
             // dtgvSinEr
             // 

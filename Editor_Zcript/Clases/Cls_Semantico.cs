@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Windows.Forms;
 
 namespace Editor_Zcript.Clases
 {
-    internal class Cls_Semantico
+    class Cls_Semantico
     {
         List<string> tokens = new List<string>();
         List<string> nombreTkn = new List<string>();

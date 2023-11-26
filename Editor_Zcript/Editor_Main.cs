@@ -228,10 +228,26 @@ namespace Editor_Zcript
         }
         private void semánticoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            lexicoToolStripMenuItem_Click(sender, e);
+            lexicoToolStripMenuItem_Click(sender, e); bool error = false;
+            DataTable LexResul = new DataTable();
+            LexResul.Columns.AddRange(new DataColumn[] { new DataColumn("Token", typeof(int)), new DataColumn("Palabra", typeof(string)), new DataColumn("Linea", typeof(int)) });
             if(dtgvSemEr.Rows.Count > 0)
                 dtgvSemEr.Rows.Clear();
-            
+            foreach(var dato in Cls_Lexico.queue)
+            {
+                if(dato.Item2 > 400)
+                {
+                    error = true;
+                    break;
+                }
+                LexResul.Rows.Add(dato.Item2, dato.Item1, dato.Item4);
+            }
+            if (!error)
+            {
+
+            }
+            else
+                MessageBox.Show("Hay errores léxicos\nArregle esos errores antes de obtener el codigo objetivo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         private void rtxt_Cod_DoubleClick(object sender, EventArgs e)
         {

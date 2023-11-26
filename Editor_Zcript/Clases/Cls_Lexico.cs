@@ -25,7 +25,7 @@ namespace Editor_Zcript
         };
         static int[] Finales = { 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127 }, Errores = { 401, 402, 403, 404, 405 };
         static int[] FinalesNoDirectos = { 100, 101, 102, 126, 127 };
-        public static List<Tuple<string, int, string, int>> queue = new List<Tuple<string, int, string, int>>();
+        public static List<Tuple<string, int, string, int>> queue = new List<Tuple<string, int, string, int>>(); // Palabra, Token, Tipo, Linea
 
         public static void verificar(string texto)
         {

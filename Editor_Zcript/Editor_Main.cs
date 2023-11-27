@@ -255,7 +255,7 @@ namespace Editor_Zcript
         }
         private void ensamblador()
         {
-            Asm codigo = new Asm()
+            //Asm codigo = new Asm()
         }
         private void rtxt_Cod_DoubleClick(object sender, EventArgs e)
         {

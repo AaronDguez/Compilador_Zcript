@@ -12,7 +12,7 @@ namespace Editor_Zcript
 {
     public partial class Editor_Main : Form
     {
-        string defaultTitle = "Editor Zcript";
+        string defaultTitle = "Editor Zcript"; Cls_Semantico semantico;
         //Dialogs
         OpenFileDialog OFD; SaveFileDialog SFD; FontDialog FD; ColorDialog CD;
         public Editor_Main()
@@ -244,7 +244,7 @@ namespace Editor_Zcript
             }
             if (!error)
             {
-                Cls_Semantico semantico = new Cls_Semantico(LexResul);
+                semantico = new Cls_Semantico(LexResul);
                 semantico.EvaluarVariables(ref mssg);
 
                 dtgvSemEr.DataSource = semantico.getErroresSem();
@@ -255,7 +255,9 @@ namespace Editor_Zcript
         }
         private void ensamblador()
         {
-            //Asm codigo = new Asm()
+            var Listas = semantico.TuplaListas();
+            Asm codigo = new Asm(Listas.Item1, Listas.Item2, Listas.Item3, Listas.Item4, Listas.Item5, Listas.Item6);
+            
         }
         private void rtxt_Cod_DoubleClick(object sender, EventArgs e)
         {

@@ -28,9 +28,9 @@ namespace Editor_Zcript.Clases
             {
                 switch (id)
                 {
-                    case 200: return "number";
-                    case 201: return "decimal";
-                    case 202: return "text";
+                    case 301: return "Number";
+                    case 302: return "Decimal";
+                    case 303: return "Cad_Str";
                     default: return "null";
                 }
             });
@@ -39,18 +39,17 @@ namespace Editor_Zcript.Clases
                 switch (Convert.ToInt32(tokens[i]))
                 {
                     case 100: type = exp(i > 0 ? Convert.ToInt32(tokens[i - 1]) : 0); break;
-                    case 200: type = "number"; break;
-                    case 201: type = "decimal"; break;
-                    case 202: type = "text"; break;
-                    case 101: type = "no_entero"; break;
-                    case 102: type = "no_decimal"; break;
-                    case 103: type = "no_decimal"; break;
-                    case 126: type = "cadena"; break;
-                    case 205: type = "if"; break;
-                    case 207: type = "else"; break;
+                    case 301: type = "Number"; break;
+                    case 302: type = "Decimal"; break;
+                    case 303: type = "Cad_Str"; break;
+                    case 101: type = "NoEntero"; break;
+                    case 102: type = "NoDecimal"; break;
+                    case 126: type = "Cadena"; break;
+                    case 203: type = "if"; break;
+                    case 204: type = "else"; break;
                     case 209: type = "while"; break;
-                    case 226: type = "declaracion"; break;
-                    case 119: type = "fin ln"; break;
+                    case 201: type = "declaracion"; break;
+/*????????????????*/case 119: type = "fin ln"; break;
                     default: type = "null"; break;
                 }
                 tipo.Add(type);
@@ -131,9 +130,9 @@ namespace Editor_Zcript.Clases
             {
                 switch (valor)
                 {
-                    case 200: return "number";
-                    case 201: return "decimal";
-                    case 202: return "text";
+                    case 301: return "Number";
+                    case 302: return "Decimal";
+                    case 303: return "Cad_Str";
                 }
                 return "";
             };
@@ -141,7 +140,7 @@ namespace Editor_Zcript.Clases
             for (int i = 2; i < tokens.Count; i++)
             {
                 //Declaracion
-                if (Convert.ToInt32(tokens[i]) == Cls_Tokens.Decl)
+                if (Convert.ToInt32(tokens[i]) == Cls_Tokens.let)
                 {
                     if (verificarExistencia(this.nombreTkn[i + 2]))
                     {
@@ -155,20 +154,20 @@ namespace Editor_Zcript.Clases
                         lineaVar.Add(ln[i]);
                         switch (nombreTkn[i + 1])
                         {
-                            case "number":
+                            case "Number":
                                 contVar.Add("0");
                                 break;
-                            case "decimal":
+                            case "Decimal":
                                 contVar.Add("0.0");
                                 break;
-                            case "text":
+                            case "Cad_Str":
                                 contVar.Add("' '");
                                 break;
                         }
                     }
                 }
                 //Todo lo relacionado con una variale
-                if (Convert.ToInt32(tokens[i]) == Cls_Tokens.Variable)
+                if (Convert.ToInt32(tokens[i]) == Cls_Tokens.Nombre_Variable)
                 {
                     //Igualacion
                     if (Convert.ToInt32(tokens[i + 1]) == Cls_Tokens.Igual)
@@ -181,13 +180,13 @@ namespace Editor_Zcript.Clases
                     }
                 }
                 //Asignacion / Igualacion
-                if (Convert.ToInt32(tokens[i]) == Cls_Tokens.Variable && Convert.ToInt32(tokens[i + 1]) == Cls_Tokens.Igual)
+                if (Convert.ToInt32(tokens[i]) == Cls_Tokens.Nombre_Variable && Convert.ToInt32(tokens[i + 1]) == Cls_Tokens.Igual)
                 {
                     contActual = this.nombreTkn[i];
                     contDespues = nombreTkn[i + 2];
                     if (nombreVar.Contains(contActual))
                     {
-                        if (getTipoVar(contActual) == "number")
+                        if (getTipoVar(contActual) == "Number")
                         {
                             if (Convert.ToInt32(tokens[i + 2]) != Cls_Tokens.NoEntero)
                             {
@@ -197,7 +196,7 @@ namespace Editor_Zcript.Clases
                                 }
                             }
                         }
-                        if (getTipoVar(contActual) == "decimal")
+                        if (getTipoVar(contActual) == "Decimal")
                         {
                             if (Convert.ToInt32(tokens[i + 2]) != Cls_Tokens.NoDecimal)
                             {
@@ -207,7 +206,7 @@ namespace Editor_Zcript.Clases
                                 }
                             }
                         }
-                        if (getTipoVar(contActual) == "text")
+                        if (getTipoVar(contActual) == "Cad_Str")
                         {
                             if (Convert.ToInt32(tokens[i + 2]) != Cls_Tokens.Cadena)
                             {
@@ -219,7 +218,7 @@ namespace Editor_Zcript.Clases
                         }
                     }
                     //Tipos incompatibles OP Aritmeticos
-                    if (Convert.ToInt32(tokens[i + 2]) == Cls_Tokens.Variable && Convert.ToInt32(tokens[i + 4]) == Cls_Tokens.Variable)
+                    if (Convert.ToInt32(tokens[i + 2]) == Cls_Tokens.Nombre_Variable && Convert.ToInt32(tokens[i + 4]) == Cls_Tokens.Nombre_Variable)
                     {
                         if (Convert.ToInt32(tokens[i + 3]) >= 104 && Convert.ToInt32(tokens[i + 3]) <= 107)
                         {
@@ -232,17 +231,17 @@ namespace Editor_Zcript.Clases
                                 {
                                     switch (getTipoVar(var1))
                                     {
-                                        case "decimal":
+                                        case "Decimal":
                                             val1 = getValor(var1);
                                             val2 = getValor(var2);
                                             //asignarValor(contActual, (Convert.ToDouble(val1) + Convert.ToDouble(val2)).ToString());
                                             break;
-                                        case "number":
+                                        case "Number":
                                             val1 = getValor(var1);
                                             val2 = getValor(var2);
                                             //asignarValor(contActual, (Convert.ToInt32(val1) + Convert.ToInt32(val2)).ToString());
                                             break;
-                                        case "text":
+                                        case "Cad_Str":
                                             val1 = getValor(var1);
                                             val2 = getValor(var2);
                                             //asignarValor(contActual, ($"'{removerComillas(val1)}{removerComillas(val2)}'"));
@@ -253,17 +252,17 @@ namespace Editor_Zcript.Clases
                                 {
                                     switch (getTipoVar(var1))
                                     {
-                                        case "decimal":
+                                        case "Decimal":
                                             val1 = getValor(var1);
                                             val2 = getValor(var2);
                                             //asignarValor(contActual, (Convert.ToDouble(val1) - Convert.ToDouble(val2)).ToString());
                                             break;
-                                        case "number":
+                                        case "Number":  
                                             val1 = getValor(var1);
                                             val2 = getValor(var2);
                                             //asignarValor(contActual, (Convert.ToInt32(val1) - Convert.ToInt32(val2)).ToString());
                                             break;
-                                        case "text":
+                                        case "Cad_Str":
                                             errores.Add($"Error 503: Ln{ln[i]} Esta Operacion '{nombreTkn[i + 3]}' no es posible con datos tipo string");
                                             break;
                                     }
@@ -272,17 +271,17 @@ namespace Editor_Zcript.Clases
                                 {
                                     switch (getTipoVar(var1))
                                     {
-                                        case "decimal":
+                                        case "Decimal":
                                             val1 = getValor(var1);
                                             val2 = getValor(var2);
                                             asignarValor(contActual, (Convert.ToDouble(val1) * Convert.ToDouble(val2)).ToString());
                                             break;
-                                        case "number":
+                                        case "Number":
                                             val1 = getValor(var1);
                                             val2 = getValor(var2);
                                             asignarValor(contActual, (Convert.ToInt32(val1) * Convert.ToInt32(val2)).ToString());
                                             break;
-                                        case "text":
+                                        case "Cad_Str":
                                             errores.Add($"Error 503: Ln{ln[i]} Esta Operacion '{nombreTkn[i + 3]}' no es posible con datos tipo string");
                                             break;
                                     }
@@ -291,19 +290,19 @@ namespace Editor_Zcript.Clases
                                 {
                                     switch (getTipoVar(var1))
                                     {
-                                        case "decimal":
+                                        case "Decimal":
                                             val1 = getValor(var1);
                                             val2 = getValor(var2);
                                             if (Convert.ToInt32(val2) == 0)
                                                 errores.Add($"Error 504: Ln {ln[i]} No es posible realizar una division entre 0");
                                             break;
-                                        case "number":
+                                        case "Number":
                                             val1 = getValor(var1);
                                             val2 = getValor(var2);
                                             if (Convert.ToDouble(val2) == 0)
                                                 errores.Add($"Error 504: Ln {ln[i]} No es posible realizar una division entre 0");
                                             break;
-                                        case "text":
+                                        case "Cad_Str":
                                             errores.Add($"Error 503: Ln{ln[i]} Esta Operacion '{nombreTkn[i + 3]}' no es posible con datos tipo string");
                                             break;
                                     }
@@ -315,9 +314,9 @@ namespace Editor_Zcript.Clases
                             }
                         }
                     }
-                    if (Convert.ToInt32(tokens[i]) == Cls_Tokens.Condit)
+                    if (Convert.ToInt32(tokens[i]) == Cls_Tokens.IF_Cond)
                     {
-                        if (Convert.ToInt32(tokens[i + 2]) == Cls_Tokens.Variable)
+                        if (Convert.ToInt32(tokens[i + 2]) == Cls_Tokens.Nombre_Variable)
                         {
                             if (!verificarExistencia(nombreTkn[i + 1]))
                                 errores.Add("Se esta Evaluando una variable que no existe dentro de un if");

@@ -228,7 +228,7 @@ namespace Editor_Zcript
         }
         private void semánticoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            lexicoToolStripMenuItem_Click(sender, e); bool error = false;
+            lexicoToolStripMenuItem_Click(sender, e); bool error = false; string mssg = string.Empty;
             DataTable LexResul = new DataTable();
             LexResul.Columns.AddRange(new DataColumn[] { new DataColumn("Token", typeof(int)), new DataColumn("Palabra", typeof(string)), new DataColumn("Linea", typeof(int)) });
             if(dtgvSemEr.Rows.Count > 0)
@@ -240,14 +240,22 @@ namespace Editor_Zcript
                     error = true;
                     break;
                 }
-                LexResul.Rows.Add(dato.Item2, dato.Item1, dato.Item4);
+                LexResul.Rows.Add(dato.Item2, dato.Item1, dato.Item4); // Token, Palabra, Linea
             }
             if (!error)
             {
+                Cls_Semantico semantico = new Cls_Semantico(LexResul);
+                semantico.EvaluarVariables(ref mssg);
 
+                dtgvSemEr.DataSource = semantico.getErroresSem();
+                ensamblador();
             }
             else
                 MessageBox.Show("Hay errores léxicos\nArregle esos errores antes de obtener el codigo objetivo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        private void ensamblador()
+        {
+            Asm codigo = new Asm()
         }
         private void rtxt_Cod_DoubleClick(object sender, EventArgs e)
         {

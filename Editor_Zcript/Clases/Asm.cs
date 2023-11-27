@@ -13,7 +13,6 @@ namespace Editor_Zcript.Clases
         List<string> lineas = new List<string>();
         List<string> contenido = new List<string>();
 
-
         List<string> tkn_ifelse = new List<string>();
         List<string> lista_ifelse = new List<string>();
         List<string> lista_lineas = new List<string>();
@@ -104,7 +103,7 @@ namespace Editor_Zcript.Clases
                 tkInt = tk.Select(x => Convert.ToInt32(x)).ToArray();
                 for (int j = 0; j < tk.Length; j++)
                 {
-                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.Amogus || Convert.ToInt32(tk[j]) == Cls_Tokens.Decl)
+                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.Main_Func || Convert.ToInt32(tk[j]) == Cls_Tokens.let)
                     {
                         break;
                     }
@@ -133,7 +132,7 @@ namespace Editor_Zcript.Clases
                         code += lineaCodigo + "\n";
                         break;
                     }
-                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.Variable)
+                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.Nombre_Variable)
                     {
                         string str = "";
                         for (int k = 2; k < ln.Length - 1; k++)
@@ -150,7 +149,7 @@ namespace Editor_Zcript.Clases
                         code += lineaCodigo + "\n";
                         break;
                     }
-                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.Condit)//if
+                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.IF_Cond)//if
                     {
                         if (hay_if == true)
                         {
@@ -163,7 +162,7 @@ namespace Editor_Zcript.Clases
                         {
                             for (int x = i; x < tkn_ifelse.Count; x++)
                             {
-                                if (Convert.ToInt32(tkn_ifelse[i]) == Cls_Tokens.Choice)
+                                if (Convert.ToInt32(tkn_ifelse[i]) == Cls_Tokens.ELSE_Cond)
                                 {
                                     lineas_ifElse.Add(lista_lineas[i]);
                                     hay_else = true;
@@ -176,7 +175,7 @@ namespace Editor_Zcript.Clases
                         {
                             for (int x = i; x < ubicacion_else - 1; x++)
                             {
-                                if (Convert.ToInt32(tkn_ifelse[i]) == Cls_Tokens.Choice)
+                                if (Convert.ToInt32(tkn_ifelse[i]) == Cls_Tokens.ELSE_Cond)
                                 {
                                     lineas_ifElse.Add(lista_lineas[i]);
                                     else_anidado = true;
@@ -192,13 +191,13 @@ namespace Editor_Zcript.Clases
                         contador_if++;
                         break;
                     }
-                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.Endit && hay_if == true && if_anidado == true)
+                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.Llave_Cerrar && hay_if == true && if_anidado == true)
                     {
                         code += $"jmp fin_if{ContarIfs(contador_if)}\nfin_if{ContarIfs(contador_if)}:\n";
                         if_anidado = false;
                         break;
                     }
-                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.Endit && hay_if == true && hay_While == false)
+                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.Llave_Cerrar && hay_if == true && hay_While == false)
                     {
                         // code += $"jmp fin_if{ContarIfs(contador_if)}:\n";
                         code += "\n;---------------------------------------------------AQUI TERMINA UN IF-----------------------------------------------------\n";
@@ -207,7 +206,7 @@ namespace Editor_Zcript.Clases
                         termina_if = true;
                         break;
                     }
-                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.Choice && termina_if == true)//else
+                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.ELSE_Cond && termina_if == true)//else
                     {
                         string str = $"\nempieza_else{contador_else}:\n";
                         code += "\n;---------------------------------------------------AQUI EMPIEZA UN ELSE-----------------------------------------------------\n";
@@ -215,7 +214,7 @@ namespace Editor_Zcript.Clases
                         hay_else = true;
                         break;
                     }
-                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.Endit && hay_else == true && termina_if == true)
+                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.Llave_Cerrar && hay_else == true && termina_if == true)
                     {
                         code += $"\njmp fin_else{contador_else}";
                         code += $"\nfin_else{contador_else}:\nfin_if{ContarIfs(contador_if)}:\n";
@@ -224,7 +223,7 @@ namespace Editor_Zcript.Clases
                         contador_else++;
                         break;
                     }
-                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.Ongoing)//while
+                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.WHILE_Cond)//while
                     {
                         code += "\n;---------------------------------------------------AQUI EMPIEZA UN WHILE-----------------------------------------------------\n";
                         code += $"\nwhile{cantidad_while}:";
@@ -232,7 +231,7 @@ namespace Editor_Zcript.Clases
                         hay_While = true;
                         break;
                     }
-                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.Endit && hay_While == true)
+                    if (Convert.ToInt32(tk[j]) == Cls_Tokens.Llave_Cerrar && hay_While == true)
                     {
                         code += $"jmp while{cantidad_while}\nfin_while{cantidad_while}:\n";
                         code += "\n;---------------------------------------------------AQUI TERMINA UN WHILE-----------------------------------------------------\n";
@@ -286,7 +285,7 @@ namespace Editor_Zcript.Clases
             {
                 /* Suma 104   Resta 105   Multi 106   Div 107 */
                 /* cadena  126  Num 101    dec 102  */
-                if (tokens[i] == Cls_Tokens.NoEntero || tokens[i] == Cls_Tokens.Variable)
+                if (tokens[i] == Cls_Tokens.NoEntero || tokens[i] == Cls_Tokens.Nombre_Variable)
                 {
                     if (string.IsNullOrEmpty(ax))
                     {
@@ -352,7 +351,7 @@ namespace Editor_Zcript.Clases
             string code = ""; ;
             for (int i = 0; i < tokens.Count; i++)
             {
-                if (tokens[i] == Cls_Tokens.Variable)
+                if (tokens[i] == Cls_Tokens.Nombre_Variable)
                 {
                     imp = exp[i];
                     break;
@@ -418,13 +417,13 @@ namespace Editor_Zcript.Clases
             string code = "", op1 = "", op2 = "";
             for (int i = 0; i < arrTokens.Length; i++)
             {
-                if (Convert.ToInt32(arrTokens[i]) == Cls_Tokens.Is)//==
+                if (Convert.ToInt32(arrTokens[i]) == Cls_Tokens.Igual_Que)//==
                 {
                     op1 = arrLexema[i - 1];
                     op2 = arrLexema[i + 1];
                     code += $"\nmov ax, {op2}\ncmp {op1}, ax\nje {entra_if}\n";
                 }
-                if (Convert.ToInt32(arrTokens[i]) == Cls_Tokens.Nop)//!=
+                if (Convert.ToInt32(arrTokens[i]) == Cls_Tokens.NOT_Equal)//!=
                 {
                     op1 = arrLexema[i - 1];
                     op2 = arrLexema[i + 1];

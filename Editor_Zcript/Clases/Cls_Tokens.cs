@@ -22,6 +22,7 @@ namespace Editor_Zcript.Clases
         public static int Writeln => 210;
         public static int Main_Func => 208;
         public static int let => 201;
+        public static int constante => 202;
         public static int Cadena => 126;
         public static int Nombre_Variable => 100;
         public static int NoEntero => 101;

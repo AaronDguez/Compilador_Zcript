@@ -13,6 +13,7 @@ namespace Editor_Zcript.Clases
         List<string> errores = new List<string>();
         DataTable tablaVars = new DataTable();
         DataTable tablaExp = new DataTable();
+        List<Tuple<string, string, string, string, string>> Lista = new List<Tuple<string, string, string, string, string>>();
 
         public Cls_Semantico(DataTable tkn)
         {
@@ -136,34 +137,39 @@ namespace Editor_Zcript.Clases
                 }
                 return "";
             };
+            Func<int, string> getTipo = (token) =>
+            {
+                string tipo = "";
+                switch (token)
+                {
+                    case 101:
+                        tipo = "int";
+                        break;
+                    case 126:
+                        tipo = "str";
+                        break;
+                    case 102:
+                        tipo = "dbl";
+                        break;
 
-            for (int i = 2; i < tokens.Count; i++)
+                }
+                return tipo;
+            };
+            for (int i = 7; i < tokens.Count; i++)
             {
                 //Declaracion
-                if (Convert.ToInt32(tokens[i]) == Cls_Tokens.let)
+                if (Convert.ToInt32(tokens[i]) == Cls_Tokens.let || Convert.ToInt32(tokens[i]) == Cls_Tokens.constante)
                 {
-                    if (verificarExistencia(this.nombreTkn[i + 2]))
+                    if (verificarExistencia(this.nombreTkn[i + 1]))
                     {
                         errores.Add($"Error 500:{ln[i]} => La variable '{this.nombreTkn[i + 2]}' ya fue declarada en la linea '{getLnVar(this.nombreTkn[i + 2])}'");
                     }
                     else
                     {
-                        tknVar.Add(tokens[i + 2]);
-                        nombreVar.Add(this.nombreTkn[i + 2]);
-                        tipoVar.Add(asignarTipo(Convert.ToInt32(tokens[i + 1])));
+                        tknVar.Add(tokens[i + 1]);
+                        nombreVar.Add(this.nombreTkn[i + 1]);
+                        tipoVar.Add(getTipo(Convert.ToInt32(tokens[i + 3])));
                         lineaVar.Add(ln[i]);
-                        switch (nombreTkn[i + 1])
-                        {
-                            case "Number":
-                                contVar.Add("0");
-                                break;
-                            case "Decimal":
-                                contVar.Add("0.0");
-                                break;
-                            case "Cad_Str":
-                                contVar.Add("' '");
-                                break;
-                        }
                     }
                 }
                 //Todo lo relacionado con una variale

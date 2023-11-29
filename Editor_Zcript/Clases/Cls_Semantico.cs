@@ -104,7 +104,11 @@ namespace Editor_Zcript.Clases
                 {
                     if (variable == nombreVar[i])
                     {
-                        contVar[i] = valor;
+                        try
+                        {
+                            contVar[i] = valor;
+                        }
+                        catch { }
                     }
                 }
             };
@@ -347,7 +351,11 @@ namespace Editor_Zcript.Clases
             }
             for (int i = 0; i < tknVar.Count; i++)
             {
-                tablaVars.Rows.Add(tknVar[i], nombreVar[i], tipoVar[i], contVar[i], lineaVar[i]);
+                try
+                {
+                    tablaVars.Rows.Add(tknVar[i], nombreVar[i], tipoVar[i], contVar[i], lineaVar[i]);
+                }
+                catch { }
             }
             for (int i = 0; i < errores.Count; i++)
             {

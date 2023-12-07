@@ -58,7 +58,10 @@ namespace Editor_Zcript.Clases
             }
             return ln;
         }
-
+        /// <summary>
+        /// Método utilizado para generar código ASM y retornarlo en una cadena
+        /// </summary>
+        /// <returns>Regresa la cadena de codigo generada </returns>
         public string Codigo_ASM()
         {
             string codigo = "";
@@ -479,7 +482,7 @@ namespace Editor_Zcript.Clases
             }
             return res;
         }
-        /* Codigo ensamblador para sacar el modulo de 2 numeros e imprimirlo (soporta numeros de varios digitos)
+        /* Codigo ensamblador para imprimir numeros de más de 2 dígitos
          * macro imprimirNumero valor
          * mov ax, valor
          * mov cx, 10
@@ -500,6 +503,7 @@ namespace Editor_Zcript.Clases
          * mov dx, si
          * int 21h
          * endm
+         * 
          * imprimirNumero dx
          */
     }

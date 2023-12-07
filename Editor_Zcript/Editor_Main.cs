@@ -255,25 +255,25 @@ namespace Editor_Zcript
                 }
                 dtgvSemEr.DataSource = semantico.getErroresSem();
                 if(dtgvSemEr.Rows.Count == 0)
-                    ensamblador();
+                    ensamblador(sender, e);
             }
             else
                 MessageBox.Show("Hay errores léxicos\nArregle esos errores antes de obtener el codigo objetivo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-        private void ensamblador()
+        private void ensamblador(object sender, EventArgs e)
         {
             try
             {
                 var Listas = semantico.TuplaListas();
                 Asm codigo = new Asm(Listas.Item1, Listas.Item2, Listas.Item3, Listas.Item4, Listas.Item5, Listas.Item6);
                 rtxt_Cod.Text = codigo.Codigo_ASM();
-                rtxt_Cod_DoubleClick(rtxt_Cod, new EventArgs());
+                rtxt_Cod_DoubleClick(sender, e);
             }
-            catch(Exception e) { MessageBox.Show($"Error al compilar el codigo.\n{e.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            catch(Exception ex) { MessageBox.Show($"Error al compilar el codigo.\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
         private void rtxt_Cod_DoubleClick(object sender, EventArgs e)
         {
-            rtxt_Cod.Copy(); MessageBox.Show("Codigo ASM copiado al portapapeles.", "Ensamblador", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Clipboard.SetText(rtxt_Cod.Text); MessageBox.Show("Codigo ASM copiado al portapapeles.", "Ensamblador", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         #endregion
 

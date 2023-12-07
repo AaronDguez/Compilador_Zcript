@@ -233,6 +233,46 @@ namespace Editor_Zcript.Clases
                             }
                         }
                     }
+
+
+                    if (Convert.ToInt32(tokens[i + 2]) == clsTokens.NoEntero && Convert.ToInt32(tokens[i + 4]) == clsTokens.NoEntero)
+                    {
+                        if (Convert.ToInt32(tokens[i + 3]) >= 104 && Convert.ToInt32(tokens[i + 3]) <= 107)
+                        {
+                            string var1 = nombreTkn[i + 2], var2 = nombreTkn[i + 4];
+                            int val1, val2;
+                            if (Convert.ToInt32(tokens[i + 3]) == clsTokens.Suma)
+                            {
+                                val1 = Convert.ToInt32(var1);
+                                val2 = Convert.ToInt32(var2);
+                                asignarValor(contActual, (Convert.ToInt32(val1) + Convert.ToInt32(val2)).ToString());
+                            }//resta
+                            if (Convert.ToInt32(tokens[i + 3]) == clsTokens.Resta)
+                            {
+                                val1 = Convert.ToInt32(var1);
+                                val2 = Convert.ToInt32(var2);
+                                asignarValor(contActual, (Convert.ToInt32(val1) - Convert.ToInt32(val2)).ToString());
+                            }//multiplicacion
+                            if (Convert.ToInt32(tokens[i + 3]) == clsTokens.Multiplicacion)
+                            {
+                                val1 = Convert.ToInt32(var1);
+                                val2 = Convert.ToInt32(var2);
+                                asignarValor(contActual, (Convert.ToInt32(val1) * Convert.ToInt32(val2)).ToString());
+                            }//division
+                            if (Convert.ToInt32(tokens[i + 3]) == clsTokens.Division)
+                            {
+                                val1 = Convert.ToInt32(var1);
+                                val2 = Convert.ToInt32(var2);
+                                if (val2 != 0)
+                                    asignarValor(contActual, (Convert.ToInt32(val1) / Convert.ToInt32(val2)).ToString());
+                                else
+                                    errores.Add($"Error 504: Ln {ln[i]} No es posible realizar una division entre 0");
+                            }
+                        }
+                    }
+
+
+
                     //Tipos incompatibles OP Aritmeticos
                     if (Convert.ToInt32(tokens[i + 2]) == clsTokens.Variable && Convert.ToInt32(tokens[i + 4]) == clsTokens.Variable)
                     {

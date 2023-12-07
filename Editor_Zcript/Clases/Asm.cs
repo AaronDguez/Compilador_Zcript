@@ -6,7 +6,6 @@ namespace Editor_Zcript.Clases
 {
     class Asm
     {
-
         List<string> token_variables = new List<string>();
         List<string> variables = new List<string>();
         List<string> contenido_vars = new List<string>();
@@ -25,8 +24,6 @@ namespace Editor_Zcript.Clases
             this.lineas = lineas_code;
             this.token_variables = tokens_variables;
             this.contenido_vars = contenido_variables;
-
-
             for (int i = 0; i < tokens.Count; i++)
             {
                 if (Convert.ToInt32(tokens[i]) == clsTokens.Cond_IF || Convert.ToInt32(tokens[i]) == clsTokens.Cond_WHILE || Convert.ToInt32(tokens[i]) == clsTokens.Cond_ELSE || Convert.ToInt32(tokens[i]) == clsTokens.Llave_Cerrar || Convert.ToInt32(tokens[i]) == clsTokens.MAIN)
@@ -74,7 +71,7 @@ namespace Editor_Zcript.Clases
 
         private string ConvertirVariables(List<string> tkn, List<string> vars, List<string> contenido)
         {
-            string code = ".Model Small\n.Stack 100h\n.Data\nBUFFER_NUMEROS DB 6 DUP(0)\r\nNL DB 0DH, 0AH, 24H";
+            string code = ".Model Small\n.Stack 100h\n.Data\nBUFFER_NUMEROS DB 6 DUP(?)\r\nNL DB 0DH, 0AH, 24H";
             string ln, val;
             code += "buffer db 12 dup('$')\n";
             for (int i = 0; i < vars.Count; i++)
@@ -353,7 +350,6 @@ namespace Editor_Zcript.Clases
             return Tuple.Create(tknsLn, lineas);
         }
 
-
         int contador_while = 1;
         int contador_if = 1;
         int contador_else = 1;
@@ -482,29 +478,5 @@ namespace Editor_Zcript.Clases
             }
             return res;
         }
-        /* Codigo ensamblador para imprimir numeros de más de 2 dígitos
-         * macro imprimirNumero valor
-         * mov ax, valor
-         * mov cx, 10
-         * mov si, offset result_buffer + 5
-         * mov byte ptr [si], '$' ; end the string
-         * 
-         * convert_loop:
-         * dec si
-         * xor dx, dx
-         * div cx
-         * add dl, '0'
-         * mov byte ptr [si], dl
-         * test ax, ax
-         * jnz convert_loop
-         * 
-         * ; Print value
-         * mov ah, 9
-         * mov dx, si
-         * int 21h
-         * endm
-         * 
-         * imprimirNumero dx
-         */
     }
 }

@@ -4,7 +4,7 @@ using System.Data;
 
 namespace Editor_Zcript.Clases
 {
-    internal class Semantico
+    class Semantico
     {
         List<string> tokens = new List<string>();
         List<string> nombreTkn = new List<string>();

@@ -248,11 +248,7 @@ namespace Editor_Zcript
                 semantico.EvaluarVariables(ref mssg);
 
                 dtgvSinEr.DataSource = semantico.getDatatable();
-                var listas = semantico.TuplaListas();
-                for (int i = 0; i < listas.Item1.Count; i++)
-                {
-                    dtgvSinEr.DataSource = semantico.getDatatable();
-                }
+                dtgvSinEr.DataSource = semantico.getDatatable();
                 dtgvSemEr.DataSource = semantico.getErroresSem();
                 if(dtgvSemEr.Rows.Count == 0)
                     ensamblador(sender, e);

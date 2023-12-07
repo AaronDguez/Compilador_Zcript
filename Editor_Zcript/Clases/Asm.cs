@@ -83,7 +83,7 @@ namespace Editor_Zcript.Clases
             return code;
         }
 
-        private string BeginCode() => $"\n.Code \nMain Proc \nmov ax, @Data \nmov ds, ax\nIMPRIMIRNUMERO MACRO VALOR\nMOV AX, VALOR\nMOV CX, 10\nMOV SI, OFFSET BUFFER_NUMEROS + 5\nMOV BYTE PTR [SI], 24H\nCONVERT_LOOP:\nDEC SI\nXOR DX, DX\nDIV CX\nADD DL, 30H\nMOV BYTE PTR [SI], DL\nTEST AX, AX\nJNZ CONVERT_LOOP\nMOV AH, 09H\nMOV DX, SI\nINT 21H\nENDM";
+        private string BeginCode() => $"\n.Code \nMain Proc \nmov ax, @Data \nmov ds, ax\n\nIMPRIMIRNUMERO MACRO VALOR\nMOV AX, VALOR\nMOV CX, 10\nMOV SI, OFFSET BUFFER_NUMEROS + 5\nMOV BYTE PTR [SI], 24H\nCONVERT_LOOP:\nDEC SI\nXOR DX, DX\nDIV CX\nADD DL, 30H\nMOV BYTE PTR [SI], DL\nTEST AX, AX\nJNZ CONVERT_LOOP\nMOV AH, 09H\nMOV DX, SI\nINT 21H\nENDM\n\n";
         private string EndCode() => "mov ah, 4ch \nint 21h \nmain endp \nend main";
         int ubicacion_else;
         private string LeerCodigo()

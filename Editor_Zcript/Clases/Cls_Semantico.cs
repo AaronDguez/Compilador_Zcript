@@ -441,7 +441,10 @@ namespace Editor_Zcript.Clases
         public List<string> getErroresSem() => errores;
 
         public DataTable getDatatable() => tablaVars;
-
+        /// <summary>
+        /// Tupla que contiene las listas con los resultados del analisis semantico
+        /// </summary>
+        /// <returns>Tupla que contiene las listas con los resultados del analisis semantico</returns>
         public Tuple<List<string>, List<string>, List<string>, List<string>, List<string>, List<string>> TuplaListas() => Tuple.Create(nombreVar, tokens, nombreTkn, ln, tknVar, contVar);
     }
 }

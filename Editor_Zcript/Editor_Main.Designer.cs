@@ -325,9 +325,11 @@
             // 
             // rtxt_Cod
             // 
-            this.rtxt_Cod.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtxt_Cod.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.rtxt_Cod.DetectUrls = false;
             this.rtxt_Cod.Location = new System.Drawing.Point(794, 484);
             this.rtxt_Cod.Name = "rtxt_Cod";
+            this.rtxt_Cod.ReadOnly = true;
             this.rtxt_Cod.Size = new System.Drawing.Size(780, 277);
             this.rtxt_Cod.TabIndex = 7;
             this.rtxt_Cod.Text = "";

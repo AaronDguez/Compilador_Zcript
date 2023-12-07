@@ -12,7 +12,7 @@ namespace Editor_Zcript
 {
     public partial class Editor_Main : Form
     {
-        string defaultTitle = "Editor Zcript"; Cls_Semantico semantico;
+        string defaultTitle = "Editor Zcript"; Semantico semantico;
         //Dialogs
         OpenFileDialog OFD; SaveFileDialog SFD; FontDialog FD; ColorDialog CD;
         public Editor_Main()
@@ -244,24 +244,36 @@ namespace Editor_Zcript
             }
             if (!error)
             {
-                semantico = new Cls_Semantico(LexResul);
+                semantico = new Semantico(LexResul);
                 semantico.EvaluarVariables(ref mssg);
 
+                dtgvSinEr.DataSource = semantico.getDatatable();
+                var listas = semantico.TuplaListas();
+                for (int i = 0; i < listas.Item1.Count; i++)
+                {
+                    dtgvSinEr.DataSource = semantico.getDatatable();
+                }
                 dtgvSemEr.DataSource = semantico.getErroresSem();
-                ensamblador();
+                if(dtgvSemEr.Rows.Count == 0)
+                    ensamblador();
             }
             else
                 MessageBox.Show("Hay errores léxicos\nArregle esos errores antes de obtener el codigo objetivo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         private void ensamblador()
         {
-            var Listas = semantico.TuplaListas();
-            Asm codigo = new Asm(Listas.Item1, Listas.Item2, Listas.Item3, Listas.Item4, Listas.Item5, Listas.Item6);
-            
+            try
+            {
+                var Listas = semantico.TuplaListas();
+                Asm codigo = new Asm(Listas.Item1, Listas.Item2, Listas.Item3, Listas.Item4, Listas.Item5, Listas.Item6);
+                rtxt_Cod.Text = codigo.Codigo_ASM();
+                rtxt_Cod_DoubleClick(rtxt_Cod, new EventArgs());
+            }
+            catch(Exception e) { MessageBox.Show($"Error al compilar el codigo.\n{e.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
         private void rtxt_Cod_DoubleClick(object sender, EventArgs e)
         {
-            rtxt_Cod.Copy();
+            rtxt_Cod.Copy(); MessageBox.Show("Codigo ASM copiado al portapapeles.", "Ensamblador", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         #endregion
 

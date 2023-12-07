@@ -74,7 +74,7 @@ namespace Editor_Zcript.Clases
 
         private string ConvertirVariables(List<string> tkn, List<string> vars, List<string> contenido)
         {
-            string code = ".Model Small\n.Stack 100h\n.Data\n";
+            string code = ".Model Small\n.Stack 100h\n.Data\nBUFFER_NUMEROS DB 6 DUP(0)\r\nNL DB 0DH, 0AH, 24H";
             string ln, val;
             code += "buffer db 12 dup('$')\n";
             for (int i = 0; i < vars.Count; i++)
@@ -86,7 +86,7 @@ namespace Editor_Zcript.Clases
             return code;
         }
 
-        private string BeginCode() => $"\n.Code \nMain Proc \nmov ax, @Data \nmov ds, ax \n";
+        private string BeginCode() => $"\n.Code \nMain Proc \nmov ax, @Data \nmov ds, ax\nIMPRIMIRNUMERO MACRO VALOR\nMOV AX, VALOR\nMOV CX, 10\nMOV SI, OFFSET BUFFER_NUMEROS + 5\nMOV BYTE PTR [SI], 24H\nCONVERT_LOOP:\nDEC SI\nXOR DX, DX\nDIV CX\nADD DL, 30H\nMOV BYTE PTR [SI], DL\nTEST AX, AX\nJNZ CONVERT_LOOP\nMOV AH, 09H\nMOV DX, SI\nINT 21H\nENDM";
         private string EndCode() => "mov ah, 4ch \nint 21h \nmain endp \nend main";
         int ubicacion_else;
         private string LeerCodigo()

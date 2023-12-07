@@ -294,7 +294,7 @@ namespace Editor_Zcript.Clases
             return code;
         }
         int cont = 0;
-        private string ImpVariosNums(string var) => $"\nmov {var}, ax\r\nmov bx, 10 \r\nmov si, offset buffer +11\r\nmov ax,{var}\r\nmov cl, 0 \r\nconvertir{cont}: \r\nxor dx, dx; \r\ndiv bx\r\nadd dl, '0' \r\ndec si\r\n mov [si],dl \r\ntest ax, ax\r\njnz convertir{cont} \r\nmov dx, si \r\nmov ah, 9 \r\nint 21h ";
+        private string ImpVariosNums(string var) => $"IMPRIMIRNUMERO {var}\n";
 
         private string Imprimir(List<int> tokens, List<string> exp)
         {

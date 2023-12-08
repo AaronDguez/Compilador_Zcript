@@ -71,9 +71,8 @@ namespace Editor_Zcript.Clases
 
         private string ConvertirVariables(List<string> tkn, List<string> vars, List<string> contenido)
         {
-            string code = ".Model Small\n.Stack 100h\n.Data\nBUFFER_NUMEROS DB 6 DUP(?)\r\nNL DB 0DH, 0AH, 24H";
+            string code = ".Model Small\n.Stack 100h\n.Data\nBUFFER_NUMEROS DB 6 DUP(?)\nNL DB 0DH, 0AH, 24H\n";
             string ln, val;
-            code += "buffer db 12 dup('$')\n";
             for (int i = 0; i < vars.Count; i++)
             {
                 ln = vars[i];
@@ -367,37 +366,37 @@ namespace Editor_Zcript.Clases
                 {
                     op1 = arrLexema[i - 1];
                     op2 = arrLexema[i + 1];
-                    code += $"\nmov ax, {op2}\ncmp {op1}, ax\nje {entra_if}\n";
+                    code += $"\nmov ax, {op2}\nmov dx, {op1}\ncmp dx, ax\nje {entra_if}\n";
                 }
                 if (Convert.ToInt32(arrTokens[i]) == clsTokens.Not_EQUAL)//!=
                 {
                     op1 = arrLexema[i - 1];
                     op2 = arrLexema[i + 1];
-                    code += $"\nmov ax, {op2}\ncmp {op1}, ax\njne {entra_if}\n";
+                    code += $"\nmov ax, {op2}\nmov dx, {op1}\ncmp dx, ax\njne {entra_if}\n";
                 }
                 if (Convert.ToInt32(arrTokens[i]) == clsTokens.Mayor)//>
                 {
                     op1 = arrLexema[i - 1];
                     op2 = arrLexema[i + 1];
-                    code += $"\nmov ax, {op2}\ncmp {op1}, ax\njg {entra_if}\n";
+                    code += $"\nmov ax, {op2}\nmov dx, {op1}\ncmp dx, ax\njg {entra_if}\n";
                 }
                 if (Convert.ToInt32(arrTokens[i]) == clsTokens.MayorIgual)//>=
                 {
                     op1 = arrLexema[i - 1];
                     op2 = arrLexema[i + 1];
-                    code += $"\nmov ax, {op2}\ncmp {op1}, ax\njge {entra_if}\n";
+                    code += $"\nmov ax, {op2}\nmov dx, {op1}\ncmp dx, ax\njge {entra_if}\n";
                 }
                 if (Convert.ToInt32(arrTokens[i]) == clsTokens.Menor)//<
                 {
                     op1 = arrLexema[i - 1];
                     op2 = arrLexema[i + 1];
-                    code += $"\nmov ax, {op2}\ncmp {op1}, ax\njl {entra_if}\n";
+                    code += $"\nmov ax, {op2}\nmov dx, {op1}\ncmp dx, ax\njl {entra_if}\n";
                 }
                 if (Convert.ToInt32(arrTokens[i]) == clsTokens.MenorIgual)//<=
                 {
                     op1 = arrLexema[i - 1];
                     op2 = arrLexema[i + 1];
-                    code += $"\nmov ax, {op2}\ncmp {op1}, ax\njle {entra_if}\n";
+                    code += $"\nmov ax, {op2}\nmov dx, {op1}\ncmp dx, ax\njle {entra_if}\n";
                 }
             }
             code += $"jmp empieza_else{contador_else}\n";

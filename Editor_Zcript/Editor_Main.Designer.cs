@@ -57,6 +57,7 @@
             this.dtgvSemEr = new System.Windows.Forms.DataGridView();
             this.rtxt_Cod = new System.Windows.Forms.RichTextBox();
             this.dtgvSinEr = new System.Windows.Forms.DataGridView();
+            this.Error_Str = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvLex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvLexE)).BeginInit();
@@ -317,6 +318,8 @@
             this.dtgvSemEr.AllowUserToDeleteRows = false;
             this.dtgvSemEr.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dtgvSemEr.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgvSemEr.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Error_Str});
             this.dtgvSemEr.Location = new System.Drawing.Point(403, 483);
             this.dtgvSemEr.Name = "dtgvSemEr";
             this.dtgvSemEr.ReadOnly = true;
@@ -346,6 +349,12 @@
             this.dtgvSinEr.ReadOnly = true;
             this.dtgvSinEr.Size = new System.Drawing.Size(385, 278);
             this.dtgvSinEr.TabIndex = 8;
+            // 
+            // Error_Str
+            // 
+            this.Error_Str.HeaderText = "Errores semanticos";
+            this.Error_Str.Name = "Error_Str";
+            this.Error_Str.ReadOnly = true;
             // 
             // Editor_Main
             // 
@@ -410,6 +419,7 @@
         private System.Windows.Forms.DataGridView dtgvSemEr;
         private System.Windows.Forms.RichTextBox rtxt_Cod;
         private System.Windows.Forms.DataGridView dtgvSinEr;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Error_Str;
     }
 }
 

@@ -231,8 +231,8 @@ namespace Editor_Zcript
             lexicoToolStripMenuItem_Click(sender, e); bool error = false; string mssg = string.Empty;
             DataTable LexResul = new DataTable();
             LexResul.Columns.AddRange(new DataColumn[] { new DataColumn("Token", typeof(int)), new DataColumn("Palabra", typeof(string)), new DataColumn("Linea", typeof(int)) });
-            if(dtgvSemEr.Rows.Count > 0)
-                dtgvSemEr.Rows.Clear();
+            if (dtgvSemEr.Rows.Count > 0)
+                dtgvSemEr.DataSource = null;
             foreach(var dato in Cls_Lexico.queue)
             {
                 if(dato.Item2 > 400)
@@ -249,9 +249,14 @@ namespace Editor_Zcript
 
                 dtgvSinEr.DataSource = semantico.getDatatable();
                 dtgvSinEr.DataSource = semantico.getDatatable();
-                dtgvSemEr.DataSource = semantico.getErroresSem();
-                if(dtgvSemEr.Rows.Count == 0)
+                for (int i = 0; i < semantico.getErroresSem().Count; i++)
+                {
+                    dtgvSemEr.Rows.Add(semantico.getErroresSem()[i]);
+                }
+                if (dtgvSemEr.Rows.Count == 0)
                     ensamblador(sender, e);
+                else
+                    rtxt_Cod.Text = "Se detectaron errores semanticos. Favor de arreglarlos para poder generar el codigo ASM.";
             }
             else
                 MessageBox.Show("Hay errores léxicos\nArregle esos errores antes de obtener el codigo objetivo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

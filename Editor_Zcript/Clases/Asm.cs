@@ -414,37 +414,37 @@ namespace Editor_Zcript.Clases
             {
                 switch (Convert.ToInt32(arrTokens[i]))
                 {
-                    case 231: // == is
+                    case 111: // == is
                         op1 = arrLexema[i - 1];
                         op2 = arrLexema[i + 1];
                         code += $"\nmov ax, {op2}\ncmp {op1},ax\njne {ongoing}\n";
                         break;
 
-                    case 216: // != nop
+                    case 115: // != nop
                         op1 = arrLexema[i - 1];
                         op2 = arrLexema[i + 1];
                         code += $"\nmov ax, {op2}\ncmp {op1},ax\nje {ongoing}\n";
                         break;
 
-                    case 110: // >
+                    case 107: // >
                         op1 = arrLexema[i - 1];
                         op2 = arrLexema[i + 1];
                         code += $"\nmov ax, {op2}\ncmp {op1},ax\njle {ongoing}\n";
                         break;
 
-                    case 111: // >=
+                    case 108: // >=
                         op1 = arrLexema[i - 1];
                         op2 = arrLexema[i + 1];
                         code += $"\nmov ax, {op2}\ncmp {op1},ax\njl {ongoing}\n";
                         break;
 
-                    case 112: // <
+                    case 109: // <
                         op1 = arrLexema[i - 1];
                         op2 = arrLexema[i + 1];
                         code += $"\nmov ax, {op2}\ncmp {op1},ax\njge {ongoing}\n";
                         break;
 
-                    case 113: // <=
+                    case 110: // <=
                         op1 = arrLexema[i - 1];
                         op2 = arrLexema[i + 1];
                         code += $"\nmov ax, {op2}\ncmp {op1},ax\njg {ongoing}\n";

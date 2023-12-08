@@ -320,7 +320,7 @@ namespace Editor_Zcript.Clases
         private string ImprimirMsg()
         {
             string msg = $"msg{messg}";
-            string code = $"\nmov ah, 09h\nlea dx, {msg}\nint 21h\n";
+            string code = $"\nmov ah, 09h\nlea dx, {msg}\nint 21h\nlea dx, NL\nint 21h\n";
             messg++;
             return code;
         }

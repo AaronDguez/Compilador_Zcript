@@ -9,6 +9,8 @@ namespace Editor_Zcript
         public static List<Tuple<int, string, int>> OrdenErrores = new List<Tuple<int, string, int>>();
         public static void Iniciar(List<Tuple<int, int>> resulLexico)
         {
+            OrdenErrores.Clear();
+            //Aqui va el codigo
 
         }
     }

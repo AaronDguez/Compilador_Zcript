@@ -6,6 +6,7 @@ namespace Editor_Zcript
 {
     class Cls_Lexico
     {
+        // Matriz de Transicion
         static int[,] matriz = {
           //  0  1   2    3    4    5   6  7  8  9   10  11  12   13   14   15   16    17   18   19  20    21  22  23 24  25
             { 1, 2, 401, 103, 104, 105, 5, 8, 9, 10, 11, 12, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 13, 0, 0, 401 },
@@ -23,32 +24,33 @@ namespace Editor_Zcript
             { 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 127, 12, 12 },
             { 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 126, 402, 13, 13 }
         };
-        static int[] Finales = { 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127 }, Errores = { 401, 402, 403, 404, 405 };
-        static int[] FinalesNoDirectos = { 100, 101, 102, 126, 127 };
-        public static List<Tuple<string, int, string, int>> queue = new List<Tuple<string, int, string, int>>(); // Palabra, Token, Tipo, Linea
-
-        public static void verificar(string texto)
+        // Estados Finales y Errores
+        static int[] Finales = { 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127 },
+        Errores = { 401, 402, 403, 404, 405 }; // 401 = Unknown ID, 402 = ' Expected, 403 = Digit Error, 404 = Digit or Operator Expected, 405 = ID or Name too long
+        static int[] FinalesNoDirectos = { 100, 101, 102, 126, 127 }; // Finales que recorren mas de un nodo a.k.a. No Directos
+        public static List<Tuple<string, int, string, int>> queue = new List<Tuple<string, int, string, int>>(); // Lista de Palabras, Tokens, Tipos y Lineas
+        public static void verificar(string texto) // Metodo a llamar para realizar el analisis
         {
-            queue.Clear();
-            int filaMatriz = 0, columnaMatriz, linea = 0, estado; string palabraEncontrada = string.Empty;
-            for (int i = 0; i < texto.Length; i++)
+            queue.Clear(); // Limpiar la lista
+            int filaMatriz = 0, columnaMatriz, linea = 0, estado; string palabraEncontrada = string.Empty; // Variables a utilizar
+            for (int i = 0; i < texto.Length; i++) // Recorrer el texto caracter por caracter
             {
-                char caracterLeido = texto[i];
-                if (char.IsLetter(caracterLeido))
+                char caracterLeido = texto[i]; // Caracter leido en el texto
+                if (char.IsLetter(caracterLeido)) // Verificar si es una letra
                     columnaMatriz = 0;
-                else if (char.IsDigit(caracterLeido))
+                else if (char.IsDigit(caracterLeido)) // Verificar si es un digito
                     columnaMatriz = 1;
-                else
+                else // Verificar si es un caracter especial
                 {
-                    switch (caracterLeido)
+                    switch (caracterLeido) // Obtener la columna de la matriz
                     {
-                        case '_':
+                        case '_': 
                             columnaMatriz = 2;
                             break;
-                        case '+':
+                        case '+': 
                             columnaMatriz = 3;
                             break;
-                        case '-':
+                        case '-': 
                             columnaMatriz = 4;
                             break;
                         case '*':
@@ -102,45 +104,45 @@ namespace Editor_Zcript
                         case ':':
                             columnaMatriz = 21;
                             break;
-                        case (char)0x0027: // '
+                        case (char)0x0027: // Comilla simple
                             columnaMatriz = 22;
                             break;
-                        case '\n':
+                        case '\n': // Salto de linea
                             columnaMatriz = 23;
                             break;
-                        case '\t':
-                        case '\0':
-                        case ' ':
-                        case (char)0x2408: //BackSpace
+                        case '\t': // Tabulacion
+                        case '\0': // Fin de linea
+                        case ' ': // Espacio
+                        case (char)0x2408: // Backspace
                             columnaMatriz = 24;
                             break;
-                        default:
+                        default: // O.C.
                             columnaMatriz = 25;
                             break;
                     }
                 }
-                palabraEncontrada += caracterLeido;
-                filaMatriz = matriz[filaMatriz, columnaMatriz];
-                if (filaMatriz >= 100)
+                palabraEncontrada += caracterLeido; // Agregar el caracter leido a la palabra encontrada
+                filaMatriz = matriz[filaMatriz, columnaMatriz]; // Obtener el estado de la matriz
+                if (filaMatriz >= 100) // Verificar si es un estado final
                 {
-                    estado = filaMatriz;
-                    if (palabraEncontrada.Length > 1) 
+                    estado = filaMatriz; // Obtener el estado
+                    if (palabraEncontrada.Length > 1) // Verificar si la palabra encontrada tiene mas de un caracter
                     {
-                        if ((estado != 127 && estado != 126 && FinalesNoDirectos.Contains(estado)) || estado == 112 )
+                        if ((estado != 127 && estado != 126 && FinalesNoDirectos.Contains(estado)) || estado == 112 ) // Verificar si el estado es un final no directo o es un estado de declaracion de metodo
                         {
-                            palabraEncontrada = palabraEncontrada.Remove(palabraEncontrada.Length - 1, 1);
-                            i--;
+                            palabraEncontrada = palabraEncontrada.Remove(palabraEncontrada.Length - 1, 1); // Eliminar el ultimo caracter de la palabra encontrada
+                            i--; // Disminuir el contador para volver a leer el caracter eliminado
                         }
                     }
-                    if (Finales.Contains(estado))
+                    if (Finales.Contains(estado)) // Verificar si el estado es un final
                     {
-                        string tipo = "Tipo Sin Determinar";
-                        if (estado == 100)
+                        string tipo = "Tipo Sin Determinar"; // Tipo de Token
+                        if (estado == 100) // Verificar si es un ID
                         {
-                            if (palabraEncontrada == "var" || palabraEncontrada == "let" || palabraEncontrada == "const")
+                            if (palabraEncontrada == "var" || palabraEncontrada == "let" || palabraEncontrada == "const") // Verificar si es una declaracion
                             {
-                                tipo = "Tipo de Variable";
-                                switch (palabraEncontrada)
+                                tipo = "Tipo de Variable"; // Tipo de Token
+                                switch (palabraEncontrada) // Obtener el estado
                                 {
                                     case "var":
                                         estado = 200;
@@ -153,10 +155,10 @@ namespace Editor_Zcript
                                         break;
                                 }
                             }
-                            else if (palabraEncontrada == "if" || palabraEncontrada == "else" || palabraEncontrada == "elif")
+                            else if (palabraEncontrada == "if" || palabraEncontrada == "else" || palabraEncontrada == "elif") // Verificar si es una condicional
                             {
-                                tipo = "Condicional";
-                                switch (palabraEncontrada)
+                                tipo = "Condicional"; // Tipo de Token
+                                switch (palabraEncontrada) // Obtener el estado
                                 {
                                     case "if":
                                         estado = 203;
@@ -169,15 +171,15 @@ namespace Editor_Zcript
                                         break;
                                 }
                             }
-                            else if (palabraEncontrada == "while")
+                            else if (palabraEncontrada == "while") // Verificar si es un ciclo
                             {
-                                tipo = "Ciclo";
+                                tipo = "Ciclo"; // Tipo de Token
                                 estado = 206;
                             }
-                            else if (palabraEncontrada == "and" || palabraEncontrada == "or")
+                            else if (palabraEncontrada == "and" || palabraEncontrada == "or") // Verificar si es un operador logico
                             {
-                                tipo = "Operador Logico";
-                                switch (palabraEncontrada)
+                                tipo = "Operador Logico"; // Tipo de Token
+                                switch (palabraEncontrada) // Obtener el estado
                                 {
                                     case "and":
                                         estado = 212;
@@ -187,15 +189,15 @@ namespace Editor_Zcript
                                         break;
                                 }
                             }
-                            else if (palabraEncontrada == "mod")
+                            else if (palabraEncontrada == "mod") // Verificar si es un modulo
                             {
-                                tipo = "modulo";
+                                tipo = "modulo"; // Tipo de Token
                                 estado = 216;
                             }
-                            else if (palabraEncontrada == "write" || palabraEncontrada == "read")
+                            else if (palabraEncontrada == "write" || palabraEncontrada == "read") // Verificar si es una lectura o escritura
                             {
-                                tipo = "Lectura/Escritura";
-                                switch (palabraEncontrada)
+                                tipo = "Lectura/Escritura"; // Tipo de Token
+                                switch (palabraEncontrada) // Obtener el estado
                                 {
                                     case "write":
                                         estado = 210;
@@ -207,39 +209,39 @@ namespace Editor_Zcript
                             }
                             else
                             {
-                                switch (palabraEncontrada)
+                                switch (palabraEncontrada) // Obtener el estado
                                 {
-                                    case "break":
+                                    case "break": // Verificar si es un break
                                         estado = 207;
                                         tipo = palabraEncontrada;
                                         break;
-                                    case "null":
+                                    case "null": // Verificar si es un null
                                         estado = 209;
                                         tipo = palabraEncontrada;
                                         break;
-                                    case "true":
+                                    case "true": // Verificar si es un true
                                         estado = 214;
                                         tipo = "Booleano";
                                         break;
-                                    case "false":
+                                    case "false": // Verificar si es un false
                                         estado = 215;
                                         tipo = "Booleano";
                                         break;
-                                    case "main":
+                                    case "main": // Verificar si es un main
                                         estado = 208;
                                         tipo = "MAIN";
                                         break;
-                                    default:
+                                    default: // Verificar si es un ID
                                         tipo = "Variable";
                                         break;
                                 }
                             }
                         }
-                        else if (estado == 101)
+                        else if (estado == 101) // Verificar si es un numero
                             tipo = "Numero Entero";
-                        else if (estado == 102)
+                        else if (estado == 102) // Verificar si es un numero decimal
                             tipo = "Numero Decimal";
-                        else if (estado >= 103 && estado <= 106)
+                        else if (estado >= 103 && estado <= 106) // Verificar si es un operador
                         {
                             switch (estado)
                             {
@@ -257,7 +259,7 @@ namespace Editor_Zcript
                                     break;
                             }
                         }
-                        else if (estado >= 107 && estado <= 115)
+                        else if (estado >= 107 && estado <= 115) // Verificar si es un operador relacional
                         {
                             switch (estado)
                             {
@@ -290,22 +292,22 @@ namespace Editor_Zcript
                                     break;
                             }
                         }
-                        else if (estado == 126)
+                        else if (estado == 126) 
                             tipo = "Cadena";
                         else if (estado == 120 || estado == 121)
                             tipo = "Parentesis";
                         else if (estado == 118 || estado == 119)
                             tipo = "Llaves";
-                        if (estado != 127)
+                        if (estado != 127) // Verificar si el estado no es un comentario
                         {
                             queue.Add(new Tuple<string, int, string, int>(palabraEncontrada, estado, tipo, linea + 1)); //Guardar Token, palabra, tipo y linea
                         }
-                        filaMatriz = 0; palabraEncontrada = string.Empty;
+                        filaMatriz = 0; palabraEncontrada = string.Empty; // Reiniciar variables
                     }
-                    else if (Errores.Contains(estado))
+                    else if (Errores.Contains(estado)) // Verificar si el estado es un error
                     {
-                        string tipo = string.Empty;
-                        switch (estado)
+                        string tipo = string.Empty; // Tipo de Token
+                        switch (estado) // Obtener el estado
                         {
                             case 401:
                                 tipo = "Unknown ID";
@@ -323,15 +325,15 @@ namespace Editor_Zcript
                                 tipo = "ID or Name too long";
                                 break;
                         }
-                        queue.Add(new Tuple<string, int, string, int>(palabraEncontrada, estado, tipo, linea + 1));
-                        filaMatriz = 0; palabraEncontrada = string.Empty;
+                        queue.Add(new Tuple<string, int, string, int>(palabraEncontrada, estado, tipo, linea + 1)); // Guardar Token, palabra, tipo y linea
+                        filaMatriz = 0; palabraEncontrada = string.Empty; // Reiniciar variables
                     }
                 }
-                else if (filaMatriz == 0)
+                else if (filaMatriz == 0) // Verificar si el estado es 0
                 {
-                    if (caracterLeido == '\n')
-                        linea++;
-                    palabraEncontrada = string.Empty;
+                    if (caracterLeido == '\n') // Verificar si es un salto de linea
+                        linea++; // Aumentar el numero de linea
+                    palabraEncontrada = string.Empty; // Reiniciar variables
                 }
             }
         }

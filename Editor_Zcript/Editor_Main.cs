@@ -274,7 +274,10 @@ namespace Editor_Zcript
         }
         private void rtxt_Cod_DoubleClick(object sender, EventArgs e)
         {
-            Clipboard.SetText(rtxt_Cod.Text); MessageBox.Show("Codigo ASM copiado al portapapeles.", "Ensamblador", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (rtxt_Cod.Text != string.Empty)
+            {
+                Clipboard.SetText(rtxt_Cod.Text); MessageBox.Show("Codigo ASM copiado al portapapeles.", "Ensamblador", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
         #endregion
 

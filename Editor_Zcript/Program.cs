@@ -14,9 +14,9 @@ namespace Editor_Zcript
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles(); // Enable visual styles for the application
-            Application.SetCompatibleTextRenderingDefault(false); // Set to true if you want to use GDI+ for text rendering
-            Application.Run(new Editor_Main()); // Editor_Main is the main form
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Editor_Main());
         }
     }
 }
